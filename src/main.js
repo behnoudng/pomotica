@@ -4,7 +4,7 @@ let workTime = 60 * 25;
 let breakTime = 60 * 5;
 let timeRemaining = workTime;
 let timerInterval = null;
-const alarm = new Audio("alarm.mp3");
+const alarm = new Audio("assets/alarm.mp3");
 function renderTime() {
   const minutes = Math.floor(timeRemaining / 60);
   const seconds = timeRemaining % 60;
@@ -187,7 +187,7 @@ document.getElementById("check-tasks").onclick = async () => {
   habiticaLog.textContent = "Checking...";
   const habits = await getHabits();
   if (!habits) {
-    habiticaLog.textContent = "Could not fetch habits";
+    habiticaLog.textContent = "Could not fetch habits. Forgot to save?";
     return;
   }
   habiticaLog.textContent = habits.map(h => `${h.text}\nID: ${h.id}`).join("\n\n");
