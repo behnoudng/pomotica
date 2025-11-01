@@ -1,16 +1,164 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 body {
-  font-family: sans-serif;
-  background: #1b1b1b;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
   color: #eee;
+  background: radial-gradient(circle at 10% 20%, #050505, #000);
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
-#app {
+#stars {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 0;
+}
+.glass-panel {
+  position: relative;
+  z-index: 1;
   text-align: center;
+  padding: 2em 3em;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 80px rgba(255, 255, 255, 0.05);
+  transition: background 0.3s ease;
+}
+h1 {
+  font-weight: 600;
+  font-size: 2rem;
+  color: #ffffffcc;
+  letter-spacing: 2px;
+  margin-bottom: 0.8em;
 }
 #timer-display {
-  font-size: 4em;
-  margin: 20px;
+  font-size: 5em;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3),
+               0 0 40px rgba(100,255,255,0.1);
+  font-weight: 600;
+  margin: 0.5em 0;
 }
+button {
+  background: linear-gradient(145deg, rgba(120,226,255,0.4), rgba(156,108,255,0.3));
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 0.9em;
+  padding: 0.6em 1.4em;
+  border-radius: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, rgba(130,236,255,0.65), rgba(166,118,255,0.55));
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 200px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.2);
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #80ffff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #9ff;
+}
+#habitica-log {
+  margin-top: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  text-align: left;
+  color: #cbd3ff;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 0.6em;
+}
+#buttons, #volume-control, #habitica-settings, #data-controls {
+  margin: 1em 0;
+}
+@media (max-width: 600px) {
+  .glass-panel {
+    padding: 1.5em;
+    border-radius: 15px;
+  }
+  #timer-display {
+    font-size: 3em;
+  }
+}
+
+/* ========== Glassy Floating Input Fields ========== */
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin: 10px auto;
+  width: 80%;
+  text-align: left;
+}
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid rgba(255,255,255,0.25);
+  outline: 0;
+  font-size: 1rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.form__field::placeholder {
+  color: transparent;
+}
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1rem;
+  cursor: text;
+  top: 20px;
+}
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s ease;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+}
+.form__field:focus {
+  color: #fff;
+  font-weight: 600;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #78e2ff, #9c6cff);
+  border-image-slice: 1;
+}
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  font-size: 0.9rem;
+  color: #9cdeff;
+  font-weight: 600;    
+}
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+

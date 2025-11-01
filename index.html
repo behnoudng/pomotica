@@ -9,7 +9,8 @@
 </head>
 
 <body>
-    <div id="app">
+    <canvas id="stars"></canvas>
+    <div id="app" class="glass-panel">
         <h1>Pomotica</h1>
         <div id="timer-display">25:00</div>
         <div id="buttons">
@@ -22,9 +23,18 @@
         </div>
         <div id="habitica-settings">
             <p>Habitica Connection</p>
-            <input id="userId" placeholder="User ID">
-            <input id="token" placeholder="API Token">
-            <input id="taskId" placeholder="Task ID">
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="User ID" id="userId" required />
+                <label for="userId" class="form__label">User ID</label>
+            </div>
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="API Token" id="token" required />
+                <label for="token" class="form__label">API Token</label>
+            </div>
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Task ID" id="taskId" />
+                <label for="taskId" class="form__label">Task ID</label>
+            </div>
             <button id="save-habitica">Save</button>
             <button id="check-tasks">Check Tasks</button>
             <button id="reset-habitica">Reset</button>
