@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Pomotica - A gamified Pomodoro timer</title>
+    <title>Pomotica</title>
 </head>
 
 <body>
     <canvas id="stars"></canvas>
-    <div id="app" class="glass-panel">
+    <div class="container">
         <h1>Pomotica</h1>
         <div id="timer-display">25:00</div>
         <div id="buttons">
@@ -19,31 +19,33 @@
         </div>
         <div id="volume-control">
             <input type="range" id="volume" min="0" max="100" value="50">
-            <button id="test-sound">Test Notif</button>
+            <button id="test-sound">Test</button>
         </div>
         <div id="habitica-settings">
-            <p>Habitica Connection</p>
-            <div class="form__group field">
-                <input type="text" class="form__field" placeholder="User ID" id="userId" required />
-                <label for="userId" class="form__label">User ID</label>
+            <p class="section-title">Habitica</p>
+            <div class="input-group">
+                <label>User ID</label>
+                <input type="text" id="userId" />
             </div>
-            <div class="form__group field">
-                <input type="text" class="form__field" placeholder="API Token" id="token" required />
-                <label for="token" class="form__label">API Token</label>
+            <div class="input-group">
+                <label>API Token</label>
+                <input type="text" id="token" />
             </div>
-            <div class="form__group field">
-                <input type="text" class="form__field" placeholder="Task ID" id="taskId" />
-                <label for="taskId" class="form__label">Task ID</label>
+            <div class="input-group">
+                <label>Task ID</label>
+                <input type="text" id="taskId" />
             </div>
-            <button id="save-habitica">Save</button>
-            <button id="check-tasks">Check Tasks</button>
-            <button id="reset-habitica">Reset</button>
-            <div id="habitica-log" style="margin-top:10px; font-size:14px; white-space:pre;"></div>
+            <div class="button-row">
+                <button id="save-habitica">Save</button>
+                <button id="check-tasks">Check</button>
+                <button id="reset-habitica">Reset</button>
+            </div>
+            <div id="habitica-log"></div>
         </div>
         <div id="data-controls">
-            <button id="export">Export Data</button>
+            <button id="export">Export</button>
             <input type="file" id="import" style="display:none">
-            <button id="import-btn">Import Data</button>
+            <button id="import-btn">Import</button>
         </div>
     </div>
     <script src="script.js"></script>
