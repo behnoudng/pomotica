@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Pomotica - A gamified Pomodoro timer</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Pomotica</h1>
+        <div id="timer-display">25:00</div>
+        <div id="buttons">
+            <button id="start-pause">Start</button>
+            <button id="next">Next</button>
+        </div>
+        <div id="volume-control">
+            <input type="range" id="volume" min="0" max="100" value="50">
+            <button id="test-sound">Test Notif</button>
+        </div>
+        <div id="habitica-settings">
+            <p>Habitica Connection</p>
+            <input id="userId" placeholder="User ID">
+            <input id="token" placeholder="API Token">
+            <button id="save-habitica">Save</button>
+        </div>
+        <div id="data-controls">
+            <button id="export">Export Data</button>
+            <input type="file" id="import" style="display:none">
+            <button id="import-btn">Import Data</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

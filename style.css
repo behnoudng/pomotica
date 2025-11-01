@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  background: #1b1b1b;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#app {
+  text-align: center;
+}
+#timer-display {
+  font-size: 4em;
+  margin: 20px;
+}
