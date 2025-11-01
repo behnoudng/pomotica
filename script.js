@@ -1,7 +1,7 @@
 let isRunning = false;
 let isBreak = false;
-let workTime = 25 * 60; 
-let breakTime = 5 * 60;
+let workTime = 1; 
+let breakTime = 1;
 let timeRemaining = workTime;
 let timerInterval = null;
 const alarm = new Audio("alarm.mp3");
@@ -68,11 +68,11 @@ function saveSession() {
   const today = new Date().toISOString().split('T')[0];
   data[today] = (data[today] || 0) + 1;
   localStorage.setItem("pomodata", JSON.stringify(data));
-  pushToHabitica()
+  pushToHabitica();
 }
 document.getElementById("export").onclick = () => {
     const data = localStorage.getItem("pomodata");
-    const blob = new Blog([data], {type: "application/json"});
+    const blob = new Blob([data], {type: "application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -90,19 +90,126 @@ importInput.onchange = event => {
     };
     reader.readAsText(file);
 }
-document.getElementById("save-habitica").onclick = () => {
-    localStorage.setItem("habiticaUser", document.getElementById("userId").value);
-    localStorage.setItem("habiticaToken", document.getElementById("token").value);
-}
-function pushToHabitica() {
+async function getHabits() {
     const userId = localStorage.getItem("habiticaUser");
     const token = localStorage.getItem("habiticaToken");
-    if (!userId || !token) return;
-    fetch("https://habitica.com/api/v3/tasks/user", {
+    if (!userId || !token) {
+        console.warn("Habitica credentials missing!");
+        return;
+    }
+    const response = await fetch("https://habitica.com/api/v3/tasks/user", {
         headers: {
             "x-api-user": userId,
-            "x-api-key": token
+            "x-api-key": token,
+            "Content-Type": "application/json",
+            "x-client": "pomotica-" + userId
         }
-    }).then(r => r.json())
-    .then(data => console.log("Habitica data:", data));
+    });
+    if (response.ok){
+        const result = await response.json()
+        const habits = result.data.filter(task => task.type === "habit");
+        console.log("Your habits:");
+        habits.forEach(habit => console.log(` - ${habit.text} (ID: ${habit.id})`))
+        return habits;
+    } else {
+        console.error("Error fetching habits: ", response.status, await response.text());
+        return null;
+    }
 }
+async function scoreHabit(taskId) {
+    const userId = localStorage.getItem("habiticaUser");
+    const token = localStorage.getItem("habiticaToken");
+    if (!userId || !token || !taskId) {
+        console.warn("Missing Habitica data! Make sure task ID and credentials are saved.");
+        return false;
+    }
+    const response = await fetch(`https://habitica.com/api/v3/tasks/${taskId}/score/up`, {
+        method: "POST",
+        headers: {
+            "x-api-user": userId,
+            "x-api-key": token,
+            "Content-Type": "application/json",
+            "x-client": "pomotica-" + userId
+        }
+    });
+    if (response.ok) {
+        const data = await response.json();
+        const newVal = data.data?.value ?? "N/A";
+        console.log(`Success! New score: ${newVal}`);
+        return true;
+    } else {
+        console.error("Error scoring habit:", response.status);
+        return false;
+    }
+}
+function pushToHabitica() {
+    const taskId = localStorage.getItem("habiticaTask");
+    if (!taskId) {
+        console.warn("No Habitica task ID set.");
+        return;
+    }
+    console.log("\nPomodoro completed! Scoring habit...");
+    scoreHabit(taskId);
+}
+//-------------HABITICA SETTINGS------------------
+const userIdInput = document.getElementById("userId");
+const tokenInput = document.getElementById("token");
+const taskIdInput = document.getElementById("taskId");
+const saveHabiticaBtn = document.getElementById("save-habitica");
+const checkTasksBtn = document.getElementById("check-tasks");
+const resetHabiticaBtn = document.getElementById("reset-habitica");
+const habiticaLog = document.getElementById("habitica-log");
+function initHabiticaFields() {
+    const savedUser = localStorage.getItem("habiticaUser");
+    const savedToken = localStorage.getItem("habiticaToken");
+    const savedTask = localStorage.getItem("habiticaTask");
+    if (savedUser && savedToken) {
+        userIdInput.value = savedUser;
+        tokenInput.value = savedToken;
+        taskIdInput.value = savedTask || "";
+        setHabiticaLocked(true);
+        habiticaLog.textContent = "Habitica linked! You can reset if needed.";
+    } else {
+        setHabiticaLocked(false);
+        habiticaLog.textContent = "Enter your Habitica credentials and save.";
+    }
+}
+function setHabiticaLocked(locked) {
+    [userIdInput, tokenInput].forEach(el => el.readOnly = locked);
+    // saveHabiticaBtn.disabled = locked;
+    // checkTasksBtn.disabled = locked;
+}
+saveHabiticaBtn.onclick = () => {
+    const user = userIdInput.value.trim();
+    const token = tokenInput.value.trim();
+    const task = taskIdInput.value.trim();
+    if (!user || !token) {
+        habiticaLog.textContent = "User ID and Token are required.";
+        return;
+    }
+    localStorage.setItem("habiticaUser", user);
+    localStorage.setItem("habiticaToken", token);
+    if (task) localStorage.setItem("habiticaTask", task);
+    setHabiticaLocked(true);
+    habiticaLog.textContent = "Saved! Habitica connection established.";
+};
+resetHabiticaBtn.onclick = () => {
+    localStorage.removeItem("habiticaUser");
+    localStorage.removeItem("habiticaToken");
+    localStorage.removeItem("habiticaTask");
+    userIdInput.value = "";
+    tokenInput.value = "";
+    taskIdInput.value = "";
+    setHabiticaLocked(false);
+    habiticaLog.textContent = "Credentials cleared. Re-enter to reconnect.";
+};
+checkTasksBtn.onclick = async () => {
+    const habits = await getHabits();
+    if (!habits) {
+        habiticaLog.textContent = "Could not fetch habits. Make sure User ID and Token are correct.";
+        return;
+    }
+    habiticaLog.textContent = "Your Habitica habits:\n" + 
+        habits.map(h => `- ${h.text}\n  ID: ${h.id}`).join("\n");
+};
+initHabiticaFields();
