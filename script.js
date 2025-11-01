@@ -1,7 +1,7 @@
 let isRunning = false;
 let isBreak = false;
-let workTime = 1; 
-let breakTime = 1;
+let workTime = 60 * 20; 
+let breakTime = 60 * 3;
 let timeRemaining = workTime;
 let timerInterval = null;
 const alarm = new Audio("alarm.mp3");
@@ -29,7 +29,7 @@ document.getElementById("start-pause").onclick = () => {
         isRunning = false;
         clearInterval(timerInterval);
         document.getElementById("start-pause").textContent = "Start";
-    }
+    }saveHabiticaBtn.disabled = locked;
 };
 document.getElementById("next").onclick = () => {
     clearInterval(timerInterval);
