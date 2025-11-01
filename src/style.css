@@ -192,3 +192,32 @@ input[type="range"]::-moz-range-thumb {
     font-size: 2.5rem;
   }
 }
+
+/* GitHub */
+.github-link {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.github-link:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+.github-link svg {
+  display: block;
+}
+@media (max-width: 480px) {
+  .github-link {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  .github-link svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
