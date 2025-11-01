@@ -4,7 +4,7 @@ let workTime = 60 * 25;
 let breakTime = 60 * 5;
 let timeRemaining = workTime;
 let timerInterval = null;
-const alarm = new Audio("assets/alarm.mp3");
+const alarm = new Audio("src/assets/alarm.mp3");
 function renderTime() {
   const minutes = Math.floor(timeRemaining / 60);
   const seconds = timeRemaining % 60;
